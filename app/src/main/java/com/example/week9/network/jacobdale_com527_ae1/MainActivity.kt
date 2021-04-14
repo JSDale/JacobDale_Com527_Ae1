@@ -9,13 +9,10 @@ import android.location.LocationListener
 import android.location.Location
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.preference.PreferenceManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import org.osmdroid.config.Configuration
@@ -26,10 +23,10 @@ import org.osmdroid.views.overlay.OverlayItem
 
 class MainActivity : AppCompatActivity(), LocationListener
 {
-    private lateinit var editTextZoomLevel: EditText
     private lateinit var mapView: MapView
     private var longitude: Double = -1.7945
     private var latitude: Double = 51.0688
+    private var previousOverlay = OverlayItem("You", "You are here", GeoPoint(latitude, longitude))
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -37,9 +34,10 @@ class MainActivity : AppCompatActivity(), LocationListener
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
         setContentView(R.layout.activity_main)
 
-        this.editTextZoomLevel = findViewById(R.id.editTextZoomLevel)
+        val btnSetZoomLevel = findViewById<Button>(R.id.btnSetZoom)
+        val editTextZoomLevel = findViewById<EditText>(R.id.editTextZoomLevel)
 
-        //editTextZoomLevel.setOnClickListener(setZoomLevel(editTextZoomLevel))
+        btnSetZoomLevel.setOnClickListener{setZoomLevel(editTextZoomLevel)}
 
         var zoomLevel = 16
         this.mapView = findViewById(R.id.mainMap)
@@ -47,6 +45,11 @@ class MainActivity : AppCompatActivity(), LocationListener
         this.mapView.controller.setCenter(GeoPoint(this.latitude, this.longitude))
 
         this.requestLocation()
+
+        this.updateCentreMarker(this.latitude, this.longitude)
+
+        var buttonRefresh = findViewById<Button>(R.id.btnRefresh)
+        buttonRefresh.setOnClickListener{centreView()}
     }
 
     private fun setZoomLevel(editText: EditText)
@@ -69,7 +72,6 @@ class MainActivity : AppCompatActivity(), LocationListener
 
     override fun onLocationChanged(location: Location)
     {
-        //TODO("Not yet implemented")
         Toast.makeText(this@MainActivity, "update", Toast.LENGTH_SHORT).show()
         this.updateMap(location)
     }
@@ -79,7 +81,35 @@ class MainActivity : AppCompatActivity(), LocationListener
         location?.apply{
             var longitude = this.longitude
             var latitude = this.latitude
-            this@MainActivity.mapView.controller.setCenter(GeoPoint(latitude, longitude))
+            MainActivity@this.longitude = longitude
+            MainActivity@this.latitude = latitude
+            updateLongitudeAndLatitude(longitude, latitude)
+            //this@MainActivity.mapView.controller.setCenter(GeoPoint(latitude, longitude))
+            updateCentreMarker(latitude, longitude)
         }
+    }
+
+    private fun updateLongitudeAndLatitude(longitude: Double, latitude: Double)
+    {
+        this.latitude = latitude
+        this.longitude = longitude
+    }
+
+    private fun updateCentreMarker(latitude: Double, longitude: Double)
+    {
+        mapView.overlays.clear()
+
+        var items = ItemizedIconOverlay(this, arrayListOf<OverlayItem>(), null)
+        var centre = OverlayItem("You", "You are here", GeoPoint(latitude, longitude))
+        items.addItem(centre)
+
+        mapView.overlays.add(items)
+
+        previousOverlay = centre
+    }
+
+    private fun centreView()
+    {
+        this.mapView.controller.setCenter(GeoPoint(this.latitude, this.longitude))
     }
 }
