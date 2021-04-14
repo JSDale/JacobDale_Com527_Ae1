@@ -10,6 +10,7 @@ import android.location.Location
 import android.content.Context
 import android.content.pm.PackageManager
 import android.preference.PreferenceManager
+import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -116,5 +117,11 @@ class MainActivity : AppCompatActivity(), LocationListener
     private fun centreView()
     {
         this.mapView.controller.setCenter(GeoPoint(this.latitude, this.longitude))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean
+    {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
     }
 }
