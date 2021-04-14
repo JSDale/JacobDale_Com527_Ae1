@@ -6,47 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/tvLatitude"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:textSize="22dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Latitude"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <EditText
-        android:id="@+id/tvLongitude"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:textSize="22dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Longitude"
-        app:layout_constraintTop_toBottomOf="@id/tvLatitude"/>
-
-    <Button
-        android:id="@+id/btnSearch"
-        android:text="Go"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvLongitude"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-
-    <Button
+        <Button
         android:id="@+id/btnRefresh"
-        android:layout_width="190dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLongitude"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="Centre"/>
 
     <EditText
@@ -58,7 +26,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnSearch"
+        app:layout_constraintTop_toBottomOf="@id/btnRefresh"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <Button
@@ -73,7 +41,7 @@
 
     <org.osmdroid.views.MapView
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="570dp"
         android:layout_marginTop="16dp"
         android:enabled="true"
         android:clickable="true"

@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), LocationListener
     private lateinit var mapView: MapView
     private var longitude: Double = -1.7945
     private var latitude: Double = 51.0688
-    private var previousOverlay = OverlayItem("You", "You are here", GeoPoint(latitude, longitude))
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -54,7 +53,15 @@ class MainActivity : AppCompatActivity(), LocationListener
 
     private fun setZoomLevel(editText: EditText)
     {
-        this.mapView.controller.setZoom(editText.text.toString().toInt())
+        try
+        {
+            this.mapView.controller.setZoom(editText.text.toString().toInt())
+        }
+        catch(e: Exception)
+        {
+            Toast.makeText(this@MainActivity, "Enter Zoom Number", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun requestLocation() {
@@ -72,8 +79,8 @@ class MainActivity : AppCompatActivity(), LocationListener
 
     override fun onLocationChanged(location: Location)
     {
-        Toast.makeText(this@MainActivity, "update", Toast.LENGTH_SHORT).show()
         this.updateMap(location)
+        Toast.makeText(this@MainActivity, "${Resources.latitude}, ${Resources.longitude}", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateMap(location: Location)
@@ -84,7 +91,6 @@ class MainActivity : AppCompatActivity(), LocationListener
             MainActivity@this.longitude = longitude
             MainActivity@this.latitude = latitude
             updateLongitudeAndLatitude(longitude, latitude)
-            //this@MainActivity.mapView.controller.setCenter(GeoPoint(latitude, longitude))
             updateCentreMarker(latitude, longitude)
         }
     }
@@ -93,6 +99,8 @@ class MainActivity : AppCompatActivity(), LocationListener
     {
         this.latitude = latitude
         this.longitude = longitude
+        Resources.latitude = latitude
+        Resources.longitude = longitude
     }
 
     private fun updateCentreMarker(latitude: Double, longitude: Double)
@@ -102,10 +110,7 @@ class MainActivity : AppCompatActivity(), LocationListener
         var items = ItemizedIconOverlay(this, arrayListOf<OverlayItem>(), null)
         var centre = OverlayItem("You", "You are here", GeoPoint(latitude, longitude))
         items.addItem(centre)
-
         mapView.overlays.add(items)
-
-        previousOverlay = centre
     }
 
     private fun centreView()
