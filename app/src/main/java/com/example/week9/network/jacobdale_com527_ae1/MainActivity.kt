@@ -25,13 +25,13 @@ class MainActivity : AppCompatActivity(), LocationListener
 
         val nv = findViewById<NavigationView>(R.id.nv)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
-        val frag1 = FragmentMainMap()
-        val frag2 = FragmentAddPOI()
+        val mainMapFragment = FragmentMainMap()
+        val addPoiFragment = FragmentAddPOI()
 
         nv.setNavigationItemSelectedListener {
             try
             {
-                val frag: Fragment = if (it.itemId == R.id.MainMapView) frag1 else frag2
+                val frag: Fragment = if (it.itemId == R.id.MainMapView) mainMapFragment else addPoiFragment
                 drawerLayout.closeDrawers()
                 supportFragmentManager.beginTransaction().replace(R.id.frameLayout1, frag).commit()
 
@@ -42,6 +42,15 @@ class MainActivity : AppCompatActivity(), LocationListener
                 e.printStackTrace()
                 false
             }
+        }
+        //try to fill with main map fragment by default
+        try
+        {
+            supportFragmentManager.beginTransaction().replace(R.id.frameLayout1, mainMapFragment).commit()
+        }
+        catch(e: Exception)
+        {
+            e.printStackTrace()
         }
     }
 
