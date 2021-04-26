@@ -16,11 +16,12 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.OverlayItem
 
-class FragmentMainMap : Fragment(), LocationListener
+class FragmentMainMap : Fragment()
 {
     private lateinit var mapView: MapView
     private lateinit var myContext: Context
     private lateinit var activity: AppCompatActivity
+    private lateinit var mainMapLocationHandler: MainMapLocationHandler
 
     fun FragmentManager(mainActivity: AppCompatActivity)
     {
@@ -50,10 +51,14 @@ class FragmentMainMap : Fragment(), LocationListener
             mapView.controller.setCenter(GeoPoint(Resources.latitude, Resources.longitude))
             //setMapView(mapView)
 
-            updateCentreMarker()
+            Resources.mapView = mapView
+
+            mainMapLocationHandler = MainMapLocationHandler()
+
+            mainMapLocationHandler.updateCentreMarker()
 
             var buttonRefresh = findViewById<Button>(R.id.btnRefresh)
-            buttonRefresh.setOnClickListener{centreView()}
+            buttonRefresh.setOnClickListener{mainMapLocationHandler.centreView()}
         }
 
     }
@@ -70,35 +75,5 @@ class FragmentMainMap : Fragment(), LocationListener
         {
             //Toast.makeText(MainActivity@this, "Enter Zoom Number", Toast.LENGTH_SHORT).show()
         }
-
-    }
-
-    override fun onLocationChanged(location: Location) {
-        this.updateMap(location)
-        //Toast.makeText(thisMainActivity@this, "${Resources.latitude}, ${Resources.longitude}", Toast.LENGTH_SHORT).show()
-    }
-
-    fun updateMap(location: Location)
-    {
-        location?.apply{
-            Resources.longitude = this.longitude
-            Resources.latitude = this.latitude
-            updateCentreMarker()
-        }
-    }
-
-    fun updateCentreMarker()
-    {
-        mapView.overlays.clear()
-
-        var items = ItemizedIconOverlay(myContext, arrayListOf<OverlayItem>(), null)
-        var centre = OverlayItem("You", "You are here", GeoPoint(Resources.latitude, Resources.longitude))
-        items.addItem(centre)
-        mapView.overlays.add(items)
-    }
-
-    fun centreView()
-    {
-        mapView.controller.setCenter(GeoPoint(Resources.latitude, Resources.longitude))
     }
 }

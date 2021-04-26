@@ -9,6 +9,8 @@ import android.location.LocationListener
 import android.location.Location
 import android.content.Context
 import android.content.pm.PackageManager
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity(), LocationListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Resources.context = this
         requestLocation()
 
         val nv = findViewById<NavigationView>(R.id.nv)
@@ -67,6 +70,16 @@ class MainActivity : AppCompatActivity(), LocationListener
     }
 
     override fun onLocationChanged(location: Location) {
-        //this is handled in FragmentMainMap.kt
+        var mainMapLocationHandler = MainMapLocationHandler()
+
+        location?.apply{
+            Resources.longitude = this.longitude
+            Resources.latitude = this.latitude
+        }
+        if(Resources.isOnMainMap)
+        {
+            mainMapLocationHandler.updateMap(location)
+        }
+
     }
 }
