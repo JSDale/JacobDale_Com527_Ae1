@@ -35,6 +35,8 @@ class FragmentSettings : Fragment()
                 btnSaveLoadRemote.isClickable=true
                 btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
                 btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
+                var myActivity = activity as MainActivity
+                Resources.poiDb =  PointOfInterestDatabase.getDatabase(myActivity.application)
             }
             btnSaveLoadRemote.setOnClickListener{
                 Resources.saveToLocalDb = false
@@ -42,6 +44,7 @@ class FragmentSettings : Fragment()
                 btnSaveLoadRemote.isClickable=false
                 btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
                 btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
+                //todo make sure Resources.poiDb is remote
             }
         }
     }
