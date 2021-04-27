@@ -12,4 +12,5 @@ public class Resources
     public static MapView mapView;
     public static Context context;
     public static Boolean saveToLocalDb;
+    public static PointOfInterestDatabase poiDb;
 }

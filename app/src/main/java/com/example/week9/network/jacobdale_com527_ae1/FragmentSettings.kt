@@ -24,6 +24,12 @@ class FragmentSettings : Fragment()
             val btnSaveLoadLocal = findViewById<Button>(R.id.buttondSaveAndLoadToFromLocalDb)
             val btnSaveLoadRemote = findViewById<Button>(R.id.buttondSaveAndLoadToFromRemoteDb)
 
+            //todo make this into a function to stop code repetition
+            btnSaveLoadLocal.isClickable = false
+            btnSaveLoadRemote.isClickable=true
+            btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
+            btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
+
             btnSaveLoadLocal.setOnClickListener{Resources.saveToLocalDb = true
                 btnSaveLoadLocal.isClickable = false
                 btnSaveLoadRemote.isClickable=true
