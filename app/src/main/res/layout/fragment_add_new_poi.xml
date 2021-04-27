@@ -17,27 +17,27 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:id="@+id/editTextArtist"
+        android:id="@+id/editTextType"
         app:layout_constraintTop_toBottomOf="@id/editTextTitle"
         android:layout_marginTop="16dp"
-        android:hint="Artist"/>
+        android:hint="Type"/>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:id="@+id/editTextYear"
-        app:layout_constraintTop_toBottomOf="@id/editTextArtist"
+        android:layout_height="300dp"
+        android:id="@+id/editTextDescription"
+        app:layout_constraintTop_toBottomOf="@id/editTextType"
         android:layout_marginTop="16dp"
-        android:hint="Year"/>
+        android:hint="Description"/>
 
     <Button
         android:id="@+id/buttonAddSong"
         android:layout_height="61dp"
         android:layout_width="match_parent"
-        android:text="Add Song"
+        android:text="Add Point Of Interest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextYear"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
         android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
