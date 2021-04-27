@@ -11,4 +11,5 @@ public class Resources
     public static Boolean isOnMainMap = true;
     public static MapView mapView;
     public static Context context;
+    public static Boolean saveToLocalDb;
 }

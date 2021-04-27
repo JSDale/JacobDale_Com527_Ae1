@@ -30,11 +30,18 @@ class MainActivity : AppCompatActivity(), LocationListener
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         val mainMapFragment = FragmentMainMap()
         val addPoiFragment = FragmentAddPOI()
+        val settingsFragment = FragmentSettings()
 
         nv.setNavigationItemSelectedListener {
             try
             {
-                val frag: Fragment = if (it.itemId == R.id.MainMapView) mainMapFragment else addPoiFragment
+                val frag = if (it.itemId == R.id.MainMapView)
+                    mainMapFragment
+                else if (it.itemId == R.id.MainMapView)
+                    addPoiFragment
+                else
+                    settingsFragment
+
                 drawerLayout.closeDrawers()
                 supportFragmentManager.beginTransaction().replace(R.id.frameLayout1, frag).commit()
 
