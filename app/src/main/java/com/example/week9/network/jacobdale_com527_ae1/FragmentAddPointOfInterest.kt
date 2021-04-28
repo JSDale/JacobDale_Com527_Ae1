@@ -40,7 +40,7 @@ class FragmentAddPointOfInterest : Fragment()
                 var title = editTextTitle.text.toString()
                 var type = editTextType.text.toString()
                 var description = editTextDescription.text.toString()
-                var enteredPoi = PointOfInterest(id, title, type, description, Resources.longitude, Resources.latitude)
+                var enteredPoi = PointOfInterest(id, title, type, description, Resources.latitude, Resources.longitude)
                 Resources.pointsOfInterestList.add(enteredPoi)
 
                 if(!Resources.saveToLocalDb)
@@ -62,7 +62,7 @@ class FragmentAddPointOfInterest : Fragment()
     {
         val url = "http://10.0.2.2:3000/poi/create"
         Resources.pointsOfInterestList.forEach {
-            val postData = listOf("name" to it.title, "type" to it.type, "description" to it.description, "lon" to Resources.longitude, "lat" to Resources.latitude)
+            val postData = listOf("name" to it.title, "type" to it.type, "description" to it.description, "lon" to it.longitude, "lat" to it.latitude)
             url.httpPost(postData).response{ request, response, result ->
                 when(result){
                     is Result.Success ->{

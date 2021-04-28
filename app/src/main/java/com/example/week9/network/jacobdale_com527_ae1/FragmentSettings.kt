@@ -69,7 +69,7 @@ class FragmentSettings : Fragment()
                             val description = currentObj.getString("description")
                             val lat = currentObj.getString("lat").toDouble()
                             val lon = currentObj.getString("lon").toDouble()
-                            val poi = PointOfInterest(id.toLong(), title, type, description, lat, lon)
+                            val poi = PointOfInterest(id.toLong(), title, type, description, lon, lat)
                             if(!Resources.pointsOfInterestList.contains(poi))
                             {
                                 Resources.pointsOfInterestList.add(poi)

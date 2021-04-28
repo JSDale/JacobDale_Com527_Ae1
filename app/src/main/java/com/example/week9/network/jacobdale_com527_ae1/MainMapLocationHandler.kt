@@ -25,7 +25,12 @@ class MainMapLocationHandler()
 
         var items = ItemizedIconOverlay(myContext, arrayListOf<OverlayItem>(), null)
         var centre = OverlayItem("You", "You are here", GeoPoint(Resources.latitude, Resources.longitude))
+        var centre2 = OverlayItem("You", "You are here", GeoPoint(-1.4042, 50.9035))
         items.addItem(centre)
+        if(!Resources.saveToLocalDb)
+        {
+            items = getPoiMarkersRemoteDb(items)
+        }
         mapView.overlays.add(items)
         centreView()
     }
@@ -33,5 +38,14 @@ class MainMapLocationHandler()
     fun centreView()
     {
         mapView.controller.setCenter(GeoPoint(Resources.latitude, Resources.longitude))
+    }
+
+    fun getPoiMarkersRemoteDb(items: ItemizedIconOverlay<OverlayItem>) : ItemizedIconOverlay<OverlayItem>
+    {
+        Resources.pointsOfInterestList.forEach{
+            var newMarker = OverlayItem(it.title, it.description, GeoPoint(it.latitude, it.longitude))
+            items.addItem(newMarker)
+        }
+        return items
     }
 }
