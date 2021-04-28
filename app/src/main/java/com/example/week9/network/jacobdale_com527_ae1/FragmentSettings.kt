@@ -15,9 +15,8 @@ class FragmentSettings : Fragment()
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?)
+    override fun onViewCreated(view: View)
     {
-        super.onActivityCreated(savedInstanceState)
         Resources.context = context
 
         view?.apply{
