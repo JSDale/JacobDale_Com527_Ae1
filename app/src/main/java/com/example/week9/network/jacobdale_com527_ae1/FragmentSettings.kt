@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
+import com.github.kittinunf.fuel.json.responseJson
 
 class FragmentSettings : Fragment()
 {
@@ -37,6 +40,7 @@ class FragmentSettings : Fragment()
                 btnSaveLoadRemote.isClickable=false
                 btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
                 btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
+                loadFromWebServer()
             }
         }
     }
@@ -47,5 +51,38 @@ class FragmentSettings : Fragment()
         btnSaveLoadRemote.isClickable=true
         btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
         btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
+    }
+
+    private fun loadFromWebServer()
+    {
+        val url = "http://10.0.2.2:3000/poi/all"
+        url.httpGet().responseJson{request, response, result ->
+            when(result){
+                is Result.Success ->{
+                    val jsonArray = result.get().array()
+                    for(i in 0 until jsonArray.length()){
+                        val currentObj = jsonArray.getJSONObject(i)
+                        try{
+                            val id = currentObj.getString("id")
+                            val title = currentObj.getString("name")
+                            val type = currentObj.getString("type")
+                            val description = currentObj.getString("description")
+                            val lat = currentObj.getString("lat").toDouble()
+                            val lon = currentObj.getString("lon").toDouble()
+                            val poi = PointOfInterest(id.toLong(), title, type, description, lat, lon)
+                            if(!Resources.pointsOfInterestList.contains(poi))
+                            {
+                                Resources.pointsOfInterestList.add(poi)
+                            }
+                        }catch(e:Exception)
+                        {
+                            Toast.makeText(Resources.context, e.message, Toast.LENGTH_SHORT)
+                        }
+
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -44,7 +44,6 @@ class FragmentMainMap : Fragment()
             mapView = findViewById<MapView>(R.id.mainMap)
             mapView.controller.setZoom(zoomLevel)
             mapView.controller.setCenter(GeoPoint(Resources.latitude, Resources.longitude))
-
             Resources.mapView = mapView
 
             mainMapLocationHandler = MainMapLocationHandler()
@@ -70,4 +69,9 @@ class FragmentMainMap : Fragment()
             Toast.makeText(Resources.context, "Enter Zoom Number", Toast.LENGTH_SHORT).show()
         }
     }
+
+//    override fun onResume(view: View?)
+//    {
+//        //mainMapLocationHandler.
+//    }
 }
