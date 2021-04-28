@@ -28,7 +28,7 @@ class FragmentMainMap : Fragment()
     }
 
 
-    override fun onViewCreated(view: View)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         Resources.context = context
 

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import org.osmdroid.views.MapView;
 
+import java.util.List;
+
 public class Resources
 {
     public static Double latitude = 51.0688;
@@ -13,4 +15,5 @@ public class Resources
     public static Context context;
     public static Boolean saveToLocalDb;
     public static PointOfInterestDatabase poiDb;
+    public static List<PointOfInterest> pointsOfInterestList;
 }

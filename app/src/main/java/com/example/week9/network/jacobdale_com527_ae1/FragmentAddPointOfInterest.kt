@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.result.Result
 
 class FragmentAddPointOfInterest : Fragment()
 {
@@ -25,31 +24,54 @@ class FragmentAddPointOfInterest : Fragment()
         Resources.context = context
     }
 
-    override fun onViewCreated(view: View)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         Resources.context = context
 
         view?.apply{
-            val btnAddPOI = findViewById<Button>(R.id.AddNewPOI)
+            val btnAddPOI = findViewById<Button>(R.id.buttonAddPOI)
             val editTextTitle = findViewById<EditText>(R.id.editTextTitle)
             val editTextType = findViewById<EditText>(R.id.editTextType)
             val editTextDescription = findViewById<EditText>(R.id.editTextDescription)
 
             btnAddPOI.setOnClickListener{
-                lifecycleScope.launch{
-                    var id: Long = 0
-                    var title = editTextTitle.text.toString()
-                    var type = editTextType.text.toString()
-                    var description = editTextDescription.text.toString()
 
-                    withContext(Dispatchers.IO) {
-                        var enteredPoi = PointOfInterest(id, title, type, description)
-                        Resources.poiDb.poiDAO().insert(enteredPoi)
-                    }
+                var id: Long = 0
+                var title = editTextTitle.text.toString()
+                var type = editTextType.text.toString()
+                var description = editTextDescription.text.toString()
+                var enteredPoi = PointOfInterest(id, title, type, description, Resources.longitude, Resources.latitude)
+                Resources.pointsOfInterestList.add(enteredPoi)
+
+                if(!Resources.saveToLocalDb)
+                {
+                    saveToRemote()
                 }
+                else{
+                    Resources.poiDb.poiDAO().insert(enteredPoi)
+                }
+
                 editTextTitle.setText("")
                 editTextType.setText("")
                 editTextDescription.setText("")
+            }
+        }
+    }
+
+    private fun saveToRemote()
+    {
+        val url = "http://10.0.2.2:3000/poi/create"
+        Resources.pointsOfInterestList.forEach {
+            val postData = listOf("name" to it.title, "type" to it.type, "description" to it.description, "lon" to Resources.longitude, "lat" to Resources.latitude)
+            url.httpPost(postData).response{ request, response, result ->
+                when(result){
+                    is Result.Success ->{
+                        Toast.makeText(Resources.context, "Uploaded To Web Server", Toast.LENGTH_LONG).show()
+                    }
+                    is Result.Failure -> {
+                        Toast.makeText(Resources.context, result.error.message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
