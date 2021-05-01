@@ -13,7 +13,7 @@ public class Resources
     public static Boolean isOnMainMap = true;
     public static MapView mapView;
     public static Context context;
-    public static Boolean saveToLocalDb;
+    public static Boolean saveToLocalDb = true;
     public static PointOfInterestDatabase poiDb;
     public static List<PointOfInterest> pointsOfInterestList;
 }

@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FragmentAddPointOfInterest : Fragment()
 {
@@ -40,7 +45,7 @@ class FragmentAddPointOfInterest : Fragment()
                 var title = editTextTitle.text.toString()
                 var type = editTextType.text.toString()
                 var description = editTextDescription.text.toString()
-                var enteredPoi = PointOfInterest(id, title, type, description, Resources.latitude, Resources.longitude)
+                var enteredPoi = PointOfInterest(id, title, type, description, Resources.longitude, Resources.latitude)
                 Resources.pointsOfInterestList.add(enteredPoi)
 
                 if(!Resources.saveToLocalDb)
@@ -48,8 +53,14 @@ class FragmentAddPointOfInterest : Fragment()
                     saveToRemote()
                 }
                 else{
-                    Resources.poiDb.poiDAO().insert(enteredPoi)
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO){
+                            Resources.poiDb.poiDAO().insert(enteredPoi)
+                        }
+                    }
                 }
+
+                Toast.makeText(Resources.context, "Added", LENGTH_SHORT)
 
                 editTextTitle.setText("")
                 editTextType.setText("")
@@ -61,18 +72,9 @@ class FragmentAddPointOfInterest : Fragment()
     private fun saveToRemote()
     {
         val url = "http://10.0.2.2:3000/poi/create"
-        Resources.pointsOfInterestList.forEach {
+        Resources.pointsOfInterestList.forEach{
             val postData = listOf("name" to it.title, "type" to it.type, "description" to it.description, "lon" to it.longitude, "lat" to it.latitude)
-            url.httpPost(postData).response{ request, response, result ->
-                when(result){
-                    is Result.Success ->{
-                        Toast.makeText(Resources.context, "Uploaded To Web Server", Toast.LENGTH_LONG).show()
-                    }
-                    is Result.Failure -> {
-                        Toast.makeText(Resources.context, result.error.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
+            url.httpPost(postData)
         }
     }
 }

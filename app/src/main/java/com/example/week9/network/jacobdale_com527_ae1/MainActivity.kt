@@ -13,8 +13,12 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import com.github.kittinunf.fuel.httpPost
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), LocationListener
 {
@@ -27,8 +31,12 @@ class MainActivity : AppCompatActivity(), LocationListener
         Resources.poiDb = PointOfInterestDatabase.getDatabase(application)
         Resources.context = this
         try{
-            Resources.pointsOfInterestList = Resources.poiDb.poiDAO().getAllPOIs()
-        }catch(e: Exception){
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    Resources.pointsOfInterestList = Resources.poiDb.poiDAO().getAllPOIs()
+                }
+            }
+        } catch(e: Exception){
             Resources.pointsOfInterestList = arrayListOf<PointOfInterest>()
         }
 
@@ -127,8 +135,12 @@ class MainActivity : AppCompatActivity(), LocationListener
     {
         if(Resources.saveToLocalDb)
         {
-            Resources.pointsOfInterestList.forEach {
-                Resources.poiDb.poiDAO().insert(it)
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    Resources.pointsOfInterestList.forEach {
+                        Resources.poiDb.poiDAO().insert(it)
+                    }
+                }
             }
         }
         else

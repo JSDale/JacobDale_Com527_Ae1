@@ -69,9 +69,4 @@ class FragmentMainMap : Fragment()
             Toast.makeText(Resources.context, "Enter Zoom Number", Toast.LENGTH_SHORT).show()
         }
     }
-
-//    override fun onResume(view: View?)
-//    {
-//        //mainMapLocationHandler.
-//    }
 }
