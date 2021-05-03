@@ -8,6 +8,12 @@ class PoiDescriptionActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_poi_information)
 
+        val mapFragment = FragmentPoiDescriptionMap()
+        //val recyclerFragment = FragmentPoiDescriptionRecyclcer()
+
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayoutMap, mapFragment).commit()
+        //supportFragmentManager.beginTransaction().replace(R.id.frameLayoutRecycler, recyclerFragment).commit()
     }
 }

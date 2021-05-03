@@ -87,6 +87,19 @@ class MainActivity : AppCompatActivity(), LocationListener
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            R.id.PoiDescriptionListMap ->
+            {
+                val intent = Intent(this, PoiDescriptionActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return false
+    }
+
     fun requestLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
@@ -97,19 +110,6 @@ class MainActivity : AppCompatActivity(), LocationListener
         {
             ActivityCompat.requestPermissions(this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION), 0)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId)
-        {
-            R.id.FindClosePOIs ->
-            {
-                val intent = Intent(this, PoiDescriptionActivity::class.java)
-                startActivityForResult(intent, 0)
-                return true
-            }
-        }
-        return false
     }
 
     override fun onLocationChanged(location: Location) {
@@ -132,10 +132,9 @@ class MainActivity : AppCompatActivity(), LocationListener
     override fun onProviderEnabled(provider: String) {
         Toast.makeText (this, "Provider enabled", Toast.LENGTH_SHORT).show()
     }
-    // Deprecated at API level 29, but must still be included, otherwise your
-    // app will crash on lower-API devices as their API will try and call it
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
 
+    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+        //this needs to stay in due to API levels below 29 needing it, if removed the app will crash.
     }
 
     override fun onDestroy()
@@ -144,11 +143,11 @@ class MainActivity : AppCompatActivity(), LocationListener
         saveToDb()
     }
 
-    override fun onStop()
-    {
-        super.onStop()
-        saveToDb()
-    }
+//    override fun onStop()
+//    {
+//        super.onStop()
+//        saveToDb()
+//    }
 
     private fun saveToDb()
     {
@@ -169,7 +168,6 @@ class MainActivity : AppCompatActivity(), LocationListener
                 val postData = listOf("name" to it.title, "type" to it.type, "description" to it.description, "lon" to Resources.longitude, "lat" to Resources.latitude)
                 url.httpPost(postData)
             }
-
         }
     }
 }
