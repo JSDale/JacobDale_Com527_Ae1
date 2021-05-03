@@ -27,7 +27,14 @@ class FragmentSettings : Fragment()
             val btnSaveLoadLocal = findViewById<Button>(R.id.buttondSaveAndLoadToFromLocalDb)
             val btnSaveLoadRemote = findViewById<Button>(R.id.buttondSaveAndLoadToFromRemoteDb)
 
-            savedToLocalIsSelected(btnSaveLoadLocal, btnSaveLoadRemote)
+            if(Resources.saveToLocalDb)
+            {
+                savedToLocalIsSelected(btnSaveLoadLocal, btnSaveLoadRemote)
+            }
+            else
+            {
+                savedToRemoteIsSelected(btnSaveLoadLocal, btnSaveLoadRemote)
+            }
 
             btnSaveLoadLocal.setOnClickListener{Resources.saveToLocalDb = true
                 savedToLocalIsSelected(btnSaveLoadLocal, btnSaveLoadRemote)
@@ -36,10 +43,7 @@ class FragmentSettings : Fragment()
             }
             btnSaveLoadRemote.setOnClickListener{
                 Resources.saveToLocalDb = false
-                btnSaveLoadLocal.isClickable = true
-                btnSaveLoadRemote.isClickable=false
-                btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
-                btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
+                savedToRemoteIsSelected(btnSaveLoadLocal, btnSaveLoadRemote)
                 loadFromWebServer()
             }
         }
@@ -48,9 +52,17 @@ class FragmentSettings : Fragment()
     private fun savedToLocalIsSelected(btnSaveLoadLocal: Button, btnSaveLoadRemote: Button)
     {
         btnSaveLoadLocal.isClickable = false
-        btnSaveLoadRemote.isClickable=true
+        btnSaveLoadRemote.isClickable = true
         btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
         btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
+    }
+
+    private fun savedToRemoteIsSelected(btnSaveLoadLocal: Button, btnSaveLoadRemote: Button)
+    {
+        btnSaveLoadLocal.isClickable = true
+        btnSaveLoadRemote.isClickable = false
+        btnSaveLoadLocal.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.purple_500))
+        btnSaveLoadRemote.setBackgroundColor(ContextCompat.getColor(Resources.context,R.color.black))
     }
 
     private fun loadFromWebServer()
@@ -78,8 +90,6 @@ class FragmentSettings : Fragment()
                         {
                             Toast.makeText(Resources.context, e.message, Toast.LENGTH_SHORT)
                         }
-
-
                     }
                 }
             }

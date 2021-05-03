@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.ItemizedIconOverlay
+import org.osmdroid.views.overlay.OverlayItem
 
 class FragmentPoiDescriptionMap : Fragment()
 {
@@ -22,7 +24,10 @@ class FragmentPoiDescriptionMap : Fragment()
     override fun onResume()
     {
         super.onResume()
-        Resources.context = context
+        var mainMapLocationHandler = MainMapLocationHandler()
+        var items = ItemizedIconOverlay(context, arrayListOf<OverlayItem>(), null)
+        items = mainMapLocationHandler.getPoiMarkersDb(items)
+        mapView.overlays.add(items)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -35,6 +40,11 @@ class FragmentPoiDescriptionMap : Fragment()
             mapView = findViewById<MapView>(R.id.poiMap)
             mapView.controller.setZoom(zoomLevel)
             mapView.controller.setCenter(GeoPoint(Resources.latitude, Resources.longitude))
+
+            var mainMapLocationHandler = MainMapLocationHandler()
+            var items = ItemizedIconOverlay(context, arrayListOf<OverlayItem>(), null)
+            items = mainMapLocationHandler.getPoiMarkersDb(items)
+            mapView.overlays.add(items)
         }
     }
 }
