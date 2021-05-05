@@ -47,4 +47,13 @@ class FragmentPoiDescriptionMap : Fragment()
             mapView.overlays.add(items)
         }
     }
+
+    fun locationSelected(index: Int)
+    {
+        val poi = Resources.pointsOfInterestList[index]
+        val latitude = poi.latitude
+        val longitude = poi.longitude
+
+        mapView.controller.setCenter(GeoPoint(latitude, longitude))
+    }
 }

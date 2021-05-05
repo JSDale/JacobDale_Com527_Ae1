@@ -6,14 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(val titles: List<String>, val descriptions: List<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class MyAdapter(val titles: List<String>, val descriptions: List<String>,
+val callback: ((Int) -> Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         val tvName = itemView.findViewById(R.id.pointOfInterestTitle) as TextView
         val tvDescription = itemView.findViewById(R.id.pointOfInterestType) as TextView
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType:Int) : RecyclerView.ViewHolder
@@ -27,17 +26,11 @@ class MyAdapter(val titles: List<String>, val descriptions: List<String>) : Recy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, index: Int)
     {
-        // Cast to our specific ViewHolder class
-
         val myViewHolder = holder as MyViewHolder
-
-        // Fill the name and description within the ViewHolder to the
-        // current elements within our two lists of data
-
         myViewHolder.tvName.text = titles[index]
         myViewHolder.tvDescription.text = descriptions[index]
 
-        //holder.itemView.setOnClickListener {callback(index)}
+        holder.itemView.setOnClickListener{ callback?.invoke(index) }
     }
 
     override fun getItemCount(): Int

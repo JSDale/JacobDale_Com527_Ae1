@@ -18,6 +18,8 @@ class PoiDescriptionActivity : AppCompatActivity()
 
         supportFragmentManager.beginTransaction().replace(R.id.frameLayoutMap, mapFragment).commit()
         supportFragmentManager.beginTransaction().replace(R.id.frameLayoutRecycler, recyclerFragment).commit()
+
+        recyclerFragment.callback = {mapFragment.locationSelected(it)}
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean

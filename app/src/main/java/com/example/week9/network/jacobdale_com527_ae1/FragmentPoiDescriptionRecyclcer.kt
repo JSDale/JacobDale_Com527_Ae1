@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.osmdroid.config.Configuration
-import org.osmdroid.views.MapView
 
 class FragmentPoiDescriptionRecyclcer : Fragment()
 {
     lateinit var global_poiListView: RecyclerView
+    var callback: ((Int) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View?
     {
@@ -22,9 +22,11 @@ class FragmentPoiDescriptionRecyclcer : Fragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
+
         view.apply {
             Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
             val poiListView = findViewById<RecyclerView>(R.id.pointOfInterestListView)
+
             global_poiListView = poiListView
             poiListView.layoutManager = LinearLayoutManager(context)
             var titles = arrayListOf<String>()
@@ -34,8 +36,7 @@ class FragmentPoiDescriptionRecyclcer : Fragment()
                 titles.add(it.title)
                 types.add(it.type)
             }
-
-            poiListView.adapter = MyAdapter(titles, types)
+            poiListView.adapter = MyAdapter(titles, types, callback)
         }
 
     }
@@ -53,7 +54,7 @@ class FragmentPoiDescriptionRecyclcer : Fragment()
                 types.add(it.type)
             }
 
-            global_poiListView.adapter = MyAdapter(titles, types)
+            global_poiListView.adapter = MyAdapter(titles, types, callback)
         }
     }
 }
