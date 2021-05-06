@@ -1,6 +1,8 @@
 package com.example.week9.network.jacobdale_com527_ae1
 
 import android.location.Location
+import androidx.core.content.ContextCompat
+import com.example.week9.network.jacobdale_com527_ae1.Resources.context
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.OverlayItem
@@ -25,6 +27,7 @@ class MainMapLocationHandler()
         items = getPoiMarkersDb(items)
         var centre = OverlayItem("You", "You are here", GeoPoint(Resources.latitude, Resources.longitude))
         items.addItem(centre)
+        centre.setMarker(ContextCompat.getDrawable(context, R.drawable.user_marker))
 
         mapView.overlays.add(items)
         centreView()

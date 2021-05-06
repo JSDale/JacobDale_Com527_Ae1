@@ -5,6 +5,7 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
@@ -12,7 +13,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.OverlayItem
 
-class FragmentPoiDescriptionMap : Fragment()
+class FragmentPoiListMap : Fragment()
 {
     private lateinit var mapView: MapView
 
@@ -53,7 +54,6 @@ class FragmentPoiDescriptionMap : Fragment()
         val poi = Resources.pointsOfInterestList[index]
         val latitude = poi.latitude
         val longitude = poi.longitude
-
         mapView.controller.setCenter(GeoPoint(latitude, longitude))
     }
 }

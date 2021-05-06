@@ -13,7 +13,7 @@ class PoiDescriptionActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_poi_information)
 
-        val mapFragment = FragmentPoiDescriptionMap()
+        val mapFragment = FragmentPoiListMap()
         val recyclerFragment = FragmentPoiDescriptionRecyclcer()
 
         supportFragmentManager.beginTransaction().replace(R.id.frameLayoutMap, mapFragment).commit()
